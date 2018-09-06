@@ -9,4 +9,4 @@ for i in range(2, len(tmp_list)):
     for j in range(0, i):
         if tmp_list[j] > tmp_list[i]:
             tmp_list[j], tmp_list[i] = tmp_list[i], tmp_list[j]
-print tmp_list
+print(tmp_list)
