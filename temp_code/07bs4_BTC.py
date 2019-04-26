@@ -53,7 +53,7 @@ class BtcSpider(object):
     # 3.保存数据
     def save_data(self, data, file_path):
         data_str=str(data)
-        data_str = data_str.encode('gbk').decode('utf-8')
+        data_str = data_str
         print(data_str)
         with open(file_path, 'w+') as f:
             f.write(data_str)

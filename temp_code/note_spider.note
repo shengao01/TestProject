@@ -1,0 +1,1160 @@
+一、什么是爬虫？
+就是抓取网页数据的程序。
+
+
+二、爬虫是如何抓取网页数据？
+
+1. 网页三大特征：
+    -1. 网页都有自己的 URL(统一资源定位符)进行在互联网上的定位，每个网页都有一个URL。
+    -2. 网页都使用 HTML(超文本标记语言)来描述页面信息。
+    -3. 网页都使用 HTTP或HTTPS(超文本传输协议)来传输 HTML 数据。
+
+2. 爬虫的设计思路：
+    -1. 首先需要设定要抓取页面 URL 地址
+    -2. 通过代码模拟发送 HTTP请求，获取对应的 HTML页面
+    -3. 提取 HTML 里的数据：
+        a. 如果目标数据，保存起来;
+        b. 如果是需要继续抓取的 URL，从第二步开始继续执行。
+
+    当所有的URL地址全部发送完成，也没有新的URL可以发送，爬虫结束。
+
+
+
+三、为什么选择用Python做爬虫？
+    很多语言都可以做爬虫，如PHP、Java、C/C++、Python等等
+
+- PHP 虽然是世界上最好的语言，但是它天生不是干这个。PHP对多线程和异步的支持较差，并发能力弱。爬虫是属于工具型程序，对速度和和效率要求较高。
+
+- Java的爬虫生态圈也非常完善。但是Java语言本身比较笨重，代码量很大。导致开发成本和重构成本较高，任何修改都会导致代码的大量变动。
+
+- C/C++ 运行效率和性能几乎最强，但是学习成本高，代码成型慢。能用C/C++写爬虫，是能力的体现，但不是最好的选择。
+
+- Python 语法优美简洁，代码编写和调试非常方便，开发效率极高。有丰富的HTTP请求处理库 和 HTML 解析库，以及有强大的Scrapy框架，并且成熟高效的scrapy-redis分布式策略。
+    解释型语言的执行效率低的问题，会被机器性能所弥补。
+
+
+三、课程介绍：
+1. Python基本语法知识（已经搞定）
+
+2. HTML 页面的抓取（Crawl）
+    urllib、urllib2、requests请求处理库，模拟浏览器发送的HTTP请求，获取服务器的响应。
+
+3. HTML 页面的解析（Parse）
+    re、xpath、BeautifulSoup、jsonpath用来提取网页数据。使用某种描述性语言来定义需要提取的数据的规则，如果符合这个规则的数据叫做"匹配"。
+
+4. 动态HTML处理 / 验证码的处理：
+    Selenium + PhantomJS/Chrome/Firefox : 调用真实浏览器去加载网页的js、ajax等动态加载的数据。
+
+    Tesseract OCR （光学字符识别系统）：机器图像识别，可以处理文本类型的验证码。
+
+    函数 - 类 - 模块/包/库 - 框架
+5. Scrapy 框架: 高定制性高性能的Python爬虫框架，提供了数据存储、数据下载、数据提取、请求去重等组件。
+
+
+6. scrapy-redis分布式策略：Scrapy本身不支持分布式，scrapy-redis就是一套以Redis数据库为核心的组件，让Scrapy支持了分布式。
+    在同一个Redis数据库里进行 请求去重、请求分配、数据存储
+
+    分布式爬虫：多个硬件环境，共享请求队列。
+
+7. 爬虫 - 反爬虫 - 反反爬虫 之间的斗争
+    起始爬虫做到最后你会发现，头疼的不是复杂的页面，也不会晦涩的数据，而是网站另一边的反爬工程师。
+
+网站反爬主要目的：1. 保护服务器，避免过载。2. 保护数据，避免被拿走。3. 面子问题。
+
+
+防止爬虫被反的措施：
+1. User-Agent ：修改请求报头，模拟真实浏览器的身份
+2. IP被封：更换代理IP
+3. 验证码：验证码对应的处理
+4. 重构前端数据加载：
+
+爬虫和反爬虫之间的斗争，一定是爬虫获胜。
+只要是真实用户能够浏览的网页数据，爬虫都有办法抓下来。
+
+
+毛主席：战略上蔑视，战术上重视。
+
+
+
+
+
+
+
+谷歌：
+PageRank : Larry Page 专利
+
+百度：
+超链分析 : Robin li   专利
+
+
+
+Python自带的模块的位置
+usr/lib/python2.7
+
+通过pip install 安装的位置
+/usr/local/lib/python2.7/site-packages
+
+
+
+
+
+
+处理字符串编码：任何编码格式都可以和Unicode互相转换。
+
+# decode() 将字符串转为Unicode字符串
+unicode_str = gbk_str.decode("gbk")
+# encode() 将Unicode字符串转为指定的编码字符串
+utf8_str = unicode_str.encode("utf-8")
+
+
+python2 : 只要不是Unicode字符串，都是str了性
+str ：非Unicode字符串
+unicode ： Unicode字符串
+
+
+python3: 只要不是Unicode字符串，都是bytes类型
+str ：Unicode字符串
+bytes ：非Unicode
+
+
+
+#print 格式化输出：按当前终端的编码格式进行输出
+
+#终端：utf-8，可以输出utf-8,也可以输出unicode
+
+
+
+
+
+Mozilla 5.0
+
+User-Agent
+
+
+世界上最早的浏览器：Mosaic 美国国家计算机中心研发
+
+Netscape 网景：Mozilla浏览器 支持框架 Frame
+
+Microsoft Windows IE ：也支持框架，披上了Mozilla
+
+第一次浏览器大战：网景失败，成立了 Mozilla基金会-研发了 Firefox（有内核,Gecko）
+
+
+IE 的内核 Trident - like Gecko
+
+
+Linux 世界的浏览器内核 ： KHTML (模仿Mozilla)
+Apple 苹果公司的Safari Webkit （模仿KHTML)
+Google Chrome 模仿 Webkit
+
+欧朋浏览器：被360收购了..
+
+# 三流公司做产品
+# 二流公司做设计
+# 一流公司做标准
+
+
+
+
+
+
+url编码
+
+HTTP请求不能传输非ASCII码的字符，所以会把非ASCII码部分转为url编码
+
+
+https://www.baidu.com/s?wd=%E4%BC%A0%E6%99%BA%E6%92%AD%E5%AE%A2
+
+%e4%bc%a0%e6%99%ba%e6%92%ad%e5%ae%a2
+
+
+page = 1, pn = 0
+page = 2, pn = 50
+page = 3, pn = 100
+
+
+pn = (page - 1) * 50
+http://tieba.baidu.com/f?
+
+kw=
+pn=
+
+
+
+http://fanyi.baidu.com/v2transapi
+
+from:en
+to:zh
+query:byebye
+transtype:translang
+simple_means_flag:3
+
+类UNIX - Linux、MacOS、Debian、
+默认编码环境都是utf-8
+
+
+
+mr_mao_hacker sffqry9r
+120.26.167.140 16816
+
+
+
+
+Ubuntu的环境变量：
+用户变量：sudo vi ~/.bashrc
+系统变量：sudo vi /etc/profile
+
+
+MacOS的环境变量：
+用户变量：sudo vi ~/.bash_profile
+系统变量：sudo vi /etc/profile
+
+让环境变量立刻生效：
+source .bash_profile
+source .bashrc
+
+
+
+
+
+模拟登录的标准流程：
+1. 先发送登录页面的get请求，获取登录需要的参数，和账户密码一起构建Formdata表单
+2. 在使用表单数据发送post请求，提交数据模拟登陆，登录成功就保存生成的Cookie值
+3. 再使用Cookie值尝试发送其他页面的请求，获取登录后才能访问的页面。
+
+
+登录网址：http://renren.com/PLogin.do
+email:
+password:
+
+
+
+import re
+
+
+re.match()
+re.findall()
+
+
+*?
++?
+
+#
+pattern = re.compile(".??", re.S)
+result = pattern.findall("1234")
+
+ｓ
+s
+
+
+
+list->str  : "".join(list)
+
+str->list : str.split()
+
+
+
+
+
+"http://www.neihan8.com/article/list_5_" + str(page) + ".html"
+
+# 默认.不能匹配换行符，re.S表示启用DOTALL模式，. 也可以匹配换行符
+re.compile(r'<div class="f18 mb20">(.*?)</div>', re.S) # re.S
+
+re.compile(r"<(.*?)>|&(.*?);|\s")
+
+
+
+
+
+
+通过XPaht取数据，只有两种数据 （返回字符串列表）：
+1. 文本内容 ： "//div[@class='f18 mb20']/p/text()"   需要保存的网页数据内容
+2. 属性值      "//div[@name='link']/a/@href"         通常用来提取链接
+
+XPath 永远返回列表。
+
+
+node_list = //div[@id='xxxx']/a
+
+for node in node_list:
+    node.xpath(".//")
+
+
+
+from lxml import etree
+
+# HTML DOMduixiang
+html_obj = etree.HTML(hmtl)
+
+# HTML DOM对象用xpath实例方法，返回匹配结果的列表
+result_list = html_obj.xpath("//div[@class='xxx']/a/text()")
+
+
+node_list = html_obj.xpath("//div[@class='xxx']/a")
+
+for node in node_list:
+    print node.text
+
+
+
+
+贴吧图片下载工具：
+
+1. 获取贴吧每个帖子列表页的页面
+2. 从页面里提取每个帖子的链接，并发送请求
+3. 从每个帖子的页面里提取每个图片的链接，发送请求
+4. 将图片下载到磁盘文件里
+
+
+
+from lxml import etree
+
+https://tieba.baidu.com/f?kw=%E5%8A%A8%E6%BC%AB&pn=50
+
+
+html_obj = etree.HTML(html)
+# 获取每个帖子的链接
+link_list = html_obj.xpath("//a[@class='j_th_tit']/@href")
+
+# 获取每个帖子里的每个图片的链接
+link_list = html_obj.xpath("//img[@class='BDE_Image']/@src")
+
+
+XPath的模糊查询：
+
+# 正常取值
+//p[@class='ClassHead-wrap clearfix']/a/text()
+
+# 模糊查询
+//p[contains(@class, "ClassHead")]/a/text()
+
+
+
+
+
+
+from bs4 import BeautifulSoup
+
+soup = BeautifulSoup(html)
+
+
+soup.find() : 查找网页中第一个符合匹配的数据，返回数据
+soup.find_all() : 查找网页中所有符合匹配的数据，返回所有数据的列表
+soup.select() : 查找网页中所有符合匹配的数据，返回所有数据的列表，语法是CSS Selector
+
+
+
+get_text() : 获取文本内容
+get("href") : 获取指定属性值
+
+1. 文本内容 ： "//div[@class='f18 mb20']/p/text()"   需要保存的网页数据内容
+2. 属性值      "//div[@name='link']/a/@href"         通常用来提取链接
+
+node_list = soup.find_all("div", attrs={"class" : "f18 mb20"})
+tag = soup.find("div", attrs={"class" : "f18 mb20"}).get("href")
+
+soup.select("[class='f18 mb20']")
+
+
+
+
+
+http://hr.tencent.com/position.php?&start=10
+
+
+
+
+link_list = []
+for page in range(0, 241 * 10, 10):
+    url = "http://hr.tencent.com/position.php?&start=" + str(page)
+    link_list.append(url)
+
+
+link_list = ["http://hr.tencent.com/position.php?&start=" + str(page) for page in range(0, 241 * 10, 10)]
+
+
+
+
+字符串编码：取决于你用的操作系统
+
+解释器的编码：Python2 ： ascii， Python3 ：utf-8
+
+1. Linux 操作系统处理字符串按 utf-8 处理的，Python2 的解释器是 ascii 编码的
+
+2. 如果字符串是utf-8，那么不需要通过解释器转换，直接可以写 Linux 的磁盘文件
+3. 如果字符串是 Unicode （包含非ASCII字符），默认解释器会做转码处理写utf-8，但是python2的解释器编码环境是ascii，所以转码失败，报 UnicodeEncodeError
+
+4. 如果字符串是Unicode（包含非ASCII字符），但是手动进行 encode("utf-8")，那么解释器就不再做编码转换，可以直接写入。
+
+
+代码文件的编码：表示代码里的非ASCII字符，按UTF-8处理。 # coding:utf-8
+
+
+Windows Python3 写磁盘文件： with open("xxx.txt", "w", encoding="utf-8")
+Linux Python3 写磁盘文件： with open("xxx.txt", "w")
+
+
+
+
+login_url = "https://www.zhihu.com/"
+
+post_url = "https://www.zhihu.com/login/email"
+
+captcha_url = "https://www.zhihu.com/captcha.gif?r=" + str(int(time.time() * 1000)) "&type=login"
+
+
+formdata = {
+    "email" : ,
+    "password" : ,
+    "_xsrf" : ,
+    "captcha" : ,
+}
+
+
+
+1. 先检查页面是 动态页面还是静态页面，如果是静态页面，直接发url地址请求即可；如果动态页面就抓包，找出后面向前台传输数据的文件。
+
+2. 如果是动态页面需要抓包，就找出传输文件的url地址。如果是post请求，就找出form表单。
+
+3. 尝试直接发送get/post请求拿数据，如果数据拿不到，就添加User-Agent请求报头
+
+4. 如果User-Agent不管用，就把所有的请求报头全部添加上，这时候请求就是完整的模拟了浏览器的请求。
+
+5. 如果还拿不到数据，检查IP代理。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+从计算机硬件角度：
+
+计算机的核心是CPU，承担了所有的计算任务。
+一个CPU，在一个时间片里，只能运行一个程序，CPU是串行工作的。  == "并发"
+
+台式机的 Intel i5 四核四线程：
+表示有四个CPU核心，有四个逻辑处理器，每个CPU核心一个逻辑处理器。
+每个逻辑处理器都能运行一个程序，能够同时运行四个程序  == "并行"
+
+
+笔记本的 Intel i5 双核四线程：
+表示有两个CPU核心，有个四个逻辑处理器，每个CPU核心两个逻辑处理器。
+    （Intel 超线程技术，表示可以将物理CPU虚拟化出两个逻辑处理器）
+每个逻辑处理器都能运行一个程序，能够同时运行四个程序。  == "并行"
+
+
+注意：CPU的 x核x线程 和 操作系统调度的线程，不是一回事。
+
+
+
+
+从操作系统的角度：
+
+进程和线程，都是一种CPU执行任务的执行单位。
+
+进程：表示一个程序的上下文执行活动（打开、执行、保存、关闭）
+线程：表示进程执行程序的时候的最小工作单位（执行功能1，执行功能2，执行功能3）
+
+一个程序执行至少有一个进程
+一个进程执行至少有一个线程
+
+
+
+并行：
+多个CPU核心，不同程序可以由不同的CPU执行。
+多个程序真正的同时执行，就这是"并行"
+
+任务数 <= CPU核心
+
+任务1：--------------
+任务2：--------------
+任务3：--------------
+任务4：--------------
+
+
+
+并发：
+单个CPU核心，在同一个时间片里只能一个程序。
+如果需要运行多个程序，则串行执行，这就是"并发"
+
+任务数 > CPU核心
+
+任务1：----            ----
+任务2：    ----
+任务3：            ----
+任务4：        ----
+
+
+多进程/多线程：表示一个程序可以同时执行多个任务。
+进程和线程的调度，由操作系统完成。
+
+
+进程：
+进程有自己独立的内存空间，多个进程之间不共享任何数据和状态。
+多个进程之间的通信，由操作系统内核进行信号传递。
+通信效率低、切换开销大。
+
+
+线程：
+多个线程共享同一个进程的内存空间，所以通信效率高，切换开销小。
+共享意味着竞争，竞争意味着数据不安全。所以通过"互斥锁"控制。
+
+"互斥锁"：一种安全有序的让多个线程访问内存空间的机制。
+
+
+Python的多线程：
+
+GIL(全局解释器锁)：线程执行任务的权限。
+
+当一个线程需要执行任务，必须获取GIL，没有GIL的线程是不能执行任务的。
+
+在Python程序里，只有一个GIL。
+
+
+坏处：Python的多线程不能充分利用CPU资源，不是真正的多线程。
+好处：直接杜绝了多个线程访问进程内存空间的安全问题。
+
+但是，在I/O阻塞的，解释器会释放GIL。
+
+Python中的多线程，非常适合爬虫。
+
+
+
+
+多进程：密集CPU任务，不间断的执行任务（大量的并行运算）。
+    multiprocessing
+
+    缺点：多个进程之间通讯成本高，切换开销大。
+
+
+多线程：密集I/O任务（网络IO，磁盘IO，数据库IO）。
+    threading、multiprocessing.dummmy
+
+    缺点：一个时间片只能运行一个线程，不适合大量并行运算。但是切换开销小，通信成本低。
+
+协程：也叫微线程，可以在单个线程上执行多个任务，不需要操作系统调用，由程序员自己控制，没有线程切换的开销，所以效率极高。
+
+    gevent.
+    monkey.patch_all() : Python程序执行时，会动态的将网络库（socket,select）修改为异步方式执行。
+
+    缺点：面对本地IO密集任务、CPU密集任务，性能很低。
+
+
+
+
+
+
+同步：必须等待上一个任务，才能执行下一个任务。
+
+异步：不受限于之前的任务状态，就可以执行下一个任务。
+
+
+
+
+
+
+
+
+
+url = "https://movie.douban.com/top250?start="
+
+[url + str(page) for page in range(0, 225 + 1, 25)]
+
+
+
+
+
+//div[@class='info']
+
+/div[@class='hd']/a/span[1]/text()
+
+//span[@class='rating_num']/text()
+
+
+
+
+
+
+from selenium import webdriver
+
+# 创建浏览器对象
+driver = webdriver.PhantomJS()
+
+# 获取指定的网页
+driver.get("http://www.baidu.com/")
+
+# 获取网页源码
+html = driver.page_source
+
+
+soup = BeautifulSou(driver.page_source, "lxml")
+
+driver.get("https://www.douyu.com/directory/all")
+
+
+all_node = soup.find("div", {"id" : "live-list-content"})
+
+# 房间名
+room_list = all_node.find_all("h3", {"class" : "ellipsis"})
+
+# 类别
+type_list = all_node.find_all("span", {"class" :"tag ellipsis"})
+
+# 主播名
+name_list = all_node.find_all("span",  {"class" : "dy-name ellipsis fl"})
+
+# 观众人数
+people_list = all_node.find_all("span", {"class" : "dy-num fr"})
+
+
+for name, type, people, room in zip(name_list, type_list, people_list, room_list):
+    item = {}
+    item['name'] = name
+    item['type'] = type
+    item['people'] = people
+    item['room'] = room
+
+
+最后一页
+# 如果找到了，返回不是 -1，表示到了最后一页
+# 如果没找到，返回 -1，表示没到最后一页
+if hmtl.find("shark-pager-disable-next") != -1:
+    break
+
+
+点击下一页
+driver.find_element_by_class_name("shark-pager-next").click()
+
+
+
+
+
+
+
+
+sudo apt-get install tesseract-ocr
+sudo brew install tesseract
+
+终端：
+
+# 默认识别英文
+tesseract xxx.png xxx
+
+
+tesseract --list-lang
+
+# 指定按语种进行识别
+tesseract xxx.png xxx -l chi_sim
+
+
+
+
+
+
+
+
+
+
+
+
+Scrapy 框架的使用流程：
+
+1. 新建项目：创建指定的Scrapy项目
+scrapy startproject XXX
+
+2. 定义字段：编写 items.py文件，定义保存数据的字段
+
+3. 新建爬虫：创建指定的spider文件，
+scrapy genspider xxx "xxx.com"
+
+4. 编写爬虫：编写爬虫文件，发送 start_urls 里的请求，解析返回的Response响应：
+    -1. 提取目标数据：将目标数据保存到 Item 对象里，交给引擎-管道；
+    -2. 提取url地址：构建请求，交给引擎-调度器。
+
+5. 编写管道：编写 pipelines.py,处理 爬虫里提取的 Item 数据，如去重、保存等；
+
+
+6. 修改settings.py : 爬虫的项目配置文件，如配置管道类、下载中间件类等。
+
+7. 启动爬虫： Scrapy会先读取settings.py里的配置，再按配置信息执行爬虫。
+scrapy crawl xxx
+
+
+一个项目下可以存在多个爬虫，所有的爬虫共享 items.py、pipelines.py、middlewares.py、settings.py 文件。如果某个爬虫不需要共享，可单独创建项目。
+
+
+
+
+scrapy默认提供将数据存储为 csv、json、xml等格式，通过-o 指定。
+
+scrapy crawl itcast -o itcast.json
+
+如果需要的存储方式不支持，就自行编写管道文件处理。
+
+
+
+
+
+
+
+scrapy shell 如果在项目目录下执行，会读取当前项目的settings.py的配置
+
+如果没有在项目下执行，则不会附带任何settings的配置参数：
+
+scrapy shell "http://hr.tencent.com/position.php?&start=0"
+
+
+可以通过 -s 指定使用某个settings的配置：
+
+scrapy shell "http://hr.tencent.com/position.php?&start=0" -s USER_AGENT="Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko"
+
+
+
+
+
+
+response.xpath("//*/text()").extract()
+response.xpath("//*/text()").extract_first()
+
+extract() : 提取xpath的所有数据，返回列表，并且通过[] 进行取值；如果没有数据，会抛出 IndexError 异常。适合提取多条数据使用。
+
+extract_first() ：提取xpath中的第一条数据，返回字符串；如果没有数据，返回None，不会抛出异常。适合提取一条数据使用。
+
+
+s = "hello world"
+
+# 字符串分隔为列表
+s.split(" ")
+['hello', 'world']
+
+l = s.split(" ")
+
+# 列表合并为字符串
+"---".join(l)
+'hello---world'
+
+" ".join(l)
+'hello world'
+
+
+
+from scrapy.linkextractors import LinkExtractor
+
+# 创建链接提取规则的对象
+page_link = LinkExtractor(allow=(r"start=\d+"))
+
+# 通过extract_link提取当前response中符合规则的链接
+link_list = links.extract_link(response)
+
+# 获取每个link的url数据
+for link in link_list:
+    print link.url
+
+
+
+
+Rule(LinkExtractor(allow=(r"start=\d+")), callback="parse_item", follow=True)
+
+提取当前response中所有符合allow匹配规则的链接，同时发送请求：
+
+如果follow = True，则返回的每个响应会经过所有的Rule，继续提取符合allow匹配规则的链接，同时再到回调函数 parse_item 里解析。
+
+如果follow = False，仅仅到回调函数 parse_item 里解析响应，不再去提取链接。
+
+
+
+# 将下面两行代码写到 py文件里，可以直接使用解释器执行，等同于终端命令
+from scrapy import cmdline
+cmdline.execute("scrapy crawl xxxxx".split())
+
+
+
+Vim推荐配置：
+https://github.com/wklken/k-vim
+
+
+User-Agent:
+request.headers["User-Agent"] = 'Mozilla 5.0 ....'
+
+Proxy:
+request.meta['proxy'] = "http://xxxx:xxxx@123.123.12.1:6379"
+
+
+
+
+import codecs
+
+s = u"你好中国"
+
+with codecs.open("xxx.txt", "w", encoding="utf-8") as f:
+    f.write(s)
+
+
+在Scrapy里，默认情况下返回 Request/Response/Item 都是和引擎交互，
+也可以通过自定义方法互相调用和返回，不必经过引擎。
+
+
+
+在Scrapy里有三个地方可以添加请求报头：
+1. settings            : 优先级最低
+2. spider
+3. download middleware : 优先级最高
+
+
+
+Python 小整数对象池 : -5 ~ 256，这个数字范围的值，都是固定的内存保存，帮助节省内存空间。
+
+
+
+
+
+
+
+
+假设从某个JS或其他文件里，通过正则或其他工具，提取到的字符串是这个样子：'\u4f60\u597d\u4e2d\u56fd'
+
+s = '\u4f60\u597d\u4e2d\u56fd'
+
+可以通过一下方式，把这个类Unicode字符串，返回为 真正的 Unicode 字符存保存即可。
+s.decode("unicode-escape")
+
+
+
+
+
+
+
+http://capi.douyucdn.cn/api/v1/getVerticalRoom?limit=20&offset=0
+
+room_id
+vertical_src
+nickname
+online
+anchor_city
+
+
+
+
+
+
+Scrapyd 项目的远程部署和监控
+
+
+scrapyd 专用于Scrapy项目的部署和监控
+
+
+scrapyd服务就是一个web服务器，监听本机的 6800 端口。
+
+
+1. 安装scrapyd 的服务和客户端：
+
+# 服务端 ：启用scrapyd服务，在服务器上启用
+sudo pip install scrapyd
+
+# 客户端： 部署scrapy项目，在客户端使用
+sudo pip install scrapyd-client
+
+#sudo pip install scrapy --upgrade scrapy
+
+
+
+2. 在服务端，修改 scrapyd 的配置文件：
+sudo vi /usr/local/lib/python2.7/site-packages/scrapyd/default_scrapyd.conf
+
+将 bind_address 从 127.0.0.1 修改为 0.0.0.0 即可，表示允许任何ip访问，可以远程访问。
+
+
+
+
+3. 在服务器端，启动scrapyd 服务：
+~$ scrapyd
+
+
+
+
+4. 在客户端，修改scrapy项目的 scrapy.cfg文件
+
+[deploy]
+#url = http://localhost:6800/
+project = Tencent
+
+
+修改为：
+
+# 添加配置文件的scrapyd的配置名
+[deploy:scrapyd_Tencent]
+
+# 启用scrapyd服务的服务器地址，表示将项目部署到这个服务器上
+url = http://192.168.64.86:6800
+#url = http://localhost:6800/
+
+# 项目名，不必修改
+project = Tencent
+
+
+
+5. 在客户端，将scrapy项目按指定scrapyd配置部署到scrapyd服务上
+scrapyd-deploy scrapyd_Tencent -p Tencent
+
+
+
+6. 在客户端，执行scrapyd服务上的爬虫（根据爬虫名执行）：
+curl http://192.168.64.86:6800/schedule.json -d project=Tencent -d spdier=tencent
+
+    {"status": "ok", "jobid": "ba93fc8ac9e511e7a0caa45e60e36247", "node_name": "PowerMac.local"}
+
+    每次执行爬虫，不管爬虫名是否相同，都会生成一个唯一的jobid，表示当前爬虫。
+
+
+7. 在客户端，停止scrapyd服务上的爬虫（根据jobid停止）：
+curl http://192.168.64.86:6800/cancel.json -d project=Tencent -d job=ba93fc8ac9e511e7a0caa45e60e36247
+
+
+
+
+
+
+
+单机爬虫：每台机器独享自己的请求队列。
+分布式爬虫：在 不同的硬件环境 下，共享同一个请求队列。
+
+
+
+
+scrapy_redis 不是非得写分布式才用到，只要 保存请求队列，保存请求指纹，或想把数据写入到Redis数据，都可以使用这套组件。
+
+
+1024MB 1GB
+1024GB 1TB
+1024TB 1EB
+
+
+
+
+
+Selenium + Chrome 的应用场景：
+
+
+1. 如果是静态页面，直接获取html解析数据即可；
+
+
+2. 如果是动态页面，尽量抓包找 json/js 文件  。
+
+
+3. 如果js里的数据是加密的，或者页面事件难以通过代码处理，再使用浏览器处理。
+
+
+4. 因为 Selenium + PhantomJS/Chrome一次只能运行一个浏览器，而且要渲染页面，爬取效率很慢。
+
+
+5. 可以配合 scrapy + scrapy_redis + selenium + Chrome/PhantomJS 实施分布式页面抓取，提高爬取效率。
+
+
+6. 常规做法：多台物理机器，每台机器尽可能多开虚拟机，每台虚拟机运行一个浏览器进行页面抓取。降低硬件成本，提高并发效率。
+
+
+7. 但是尽量少用Selenium + PhantomJS/Chrome，因为速度很慢。除非是针对特定页面的问题解决再使用，否则一般少用。
+
+
+
+重点是数据。
+
+
+
+
+
+
+
+
+
+# 所有城市列表页
+https://www.aqistudy.cn/historydata/
+
+# 取出城市列表页里面所有城市的链接： https://www.aqistudy.cn/historydata/
+//div[@class='all']//li/a/@href
+
+# 取出每个城市的所有月份的链接 ： https://www.aqistudy.cn/historydata/
+//td/a/@href
+
+
+# 取出当前月份的每一天数据
+//tr
+
+date = ./td[1]/text()
+aqi = ./td[2]/text()
+level = ./td[3]//text()
+pm2_5 = ./td[4]/text()
+pm10 = ./td[5]/text()
+so2 = ./td[6]/text()
+co = ./td[7]/text()
+no2 = ./td[8]/text()
+o3 = ./td[9]/text()
+
+
+
+
+----- 提取网页url中的文字并处理为Unicode
+
+# 网页url
+s = "https://www.aqistudy.cn/historydata/daydata.php?city=%E5%AE%89%E9%98%B3&month=2016-08"
+
+# 取出城市部分 - urlencode编码字符串 : %E5%AE%89%E9%98%B3
+ss = s[s.find("=") + 1 : s.find("&")]
+
+import urllib
+# 通过 urllib.unquote() 转换为utf-8字节码 : '\xe5\xae\x89\xe9\x98\xb3'
+sss = urllib.unquote(ss)
+
+# Python3 的处理方式
+#import urllib.parse
+#urllib.parse.unquote(ss)
+
+# 将字节码按utf-8进行decode，返回Unicode
+ssss = sss.decode("utf-8")
+
+
+
+
+ITjuzi:
+
+
+
+
+company_1 = soup.find(class_="infoheadrow-v2")
+
+
+name = cpy1.find("h1").contents[0].strip()
+slogan = cpy1.find("h2").get_text().strip()
+home_page = cpy1.find(class_='link-line').find_all('a')[-1].get_text().strip()
+tag = cpy1.find(class_='tagset').get_text().strip().replace("\n", " ")
+
+#pattern = re.compile(r"\n\n\n|\n\n|\n")
+#print pattern.sub(", ", cpy1.find(class_='tagset').get_text().strip())
+
+
+# a_list = cpy1.find(class_='link-line').find_all('a')
+# for a in a_list:
+#     link = a.get("href")
+#     if "http" in link:
+#         if "weibo" or "weixin" not in link:
+#             home_page = link
+
+
+
+company_2 ： cpy2 = soup.find(class_="block-inc-info")
+
+company_info = cpy2.find(class_='desc').get_text().strip()
+company_fullname = cpy2.find(class_='des-more').find("h2").get_text()
+company_time = cpy2.find(class_='des-more').find_all("h3")[0].get_text()
+company_size = cpy2.find(class_='des-more').find_all("h3")[1].get_text()
+company_status = cpy2.find(class_='des-more').find_all("span")[-1].get_text()
+
+
+
+
+company_3 ： cpy3 = soup.find(class_='list-round-v2')
+tr_list = cpy3.find_all("tr")
+
+
+tr_item_list = []
+for tr in tr_list:
+    tr_item = {}
+    tr_item['financing_time'] = tr.find_all("td")[0].get_text().strip()
+    tr_item['financing_stage'] = tr.find_all("td")[1].get_text().strip()
+    tr_item['financing_money'] = tr.find_all("td")[2].get_text().strip()
+    tr_item['financing_company'] = tr.find_all("td")[3].get_text().strip()
+    tr_item_list.append(tr_item)
+
+financing =  tr_item_list
+
+[{
+    financing_time
+    financing_stage
+    financing_money
+    financing_company
+},
+{
+    financing_time
+    financing_stage
+    financing_money
+    financing_company
+},
+{
+    financing_time
+    financing_stage
+    financing_money
+    financing_company
+}]
+
+
+
+company_4: cpy4 =  soup.find(class_='team-list')
+
+li_list = cpy4.find_all("li")
+
+li_item_list = []
+for li in li_list:
+    li_item = {}
+    li_item['team_name'] = li.find_all("div")[1].get_text().strip()
+    li_item['team_title'] = li.find_all('div')[2].get_text().strip()
+    li_item['team_info'] = li.find_all('div')[3].get_text().strip()
+    li_item_list.append(li_item)
+
+team = li_item_list
+
+
+{
+    team_name
+    team_title
+    team_info
+}
+
+company_5 : cpy5 =  soup.find(class_='product-list')
+
+li_list = cpy5.find_all("li")
+
+li_item_list = []
+for li in li_list:
+    li_item = {}
+    li_item['product_name'] = li.find(class_='product-name').get_text().strip()
+    li_item['product_info'] = li.find(class_='product-des').get_text().strip()
+    li_item_list.append(li_item)
+
+product = li_item_list
+
+
+
+{
+    product_name
+    product_info
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -8,6 +8,7 @@ import re
 from fontTools.ttLib import TTFont
 import chardet
 
+
 class MaoyanSpider():
     def __init__(self):
 
@@ -95,8 +96,6 @@ class MaoyanSpider():
             for x in link_list:
                 res = requests.get(x, headers=self.headers)
                 if res.status_code == 200:
-
-
                     res.encoding=res.apparent_encoding
                     res = res.content.decode()
                     # print(res)
@@ -138,18 +137,18 @@ class MaoyanSpider():
                                     numList.append(baseNumList[j])
                                     break
                         uniList[1] = 'uni0078'
-                        utf8List = [eval("u'\u" + uni[3:] + "'").encode("utf-8") for uni in uniList[1:]]
+                        # utf8List = [eval("u'\u" + uni[3:] + "'").encode("utf-8") for uni in uniList[1:]]
 
                         # 获取发帖内容
                         movie_wish = htm.xpath("/html/body/div[3]/div/div[2]/div[3]/div[2]/div//text()")[0].text_content().replace(' ', '').replace('\n', '').encode('utf-8')
                         movie_name = htm.xpath("/html/body/div[3]/div/div[2]/div[1]/h3/text()")[0].text_content().replace(' ', '').replace('\n', '').encode('utf-8')
 
-                        print( movie_name,movie_wish)
+                        print(movie_name, movie_wish)
 
                         print('---------------after-----------------')
-                        for i in range(len(utf8List)):
-                            movie_wish = movie_wish.replace(utf8List[i],numList[i])
-                        print(movie_name, movie_wish)
+                        # for i in range(len(utf8List)):
+                        #     movie_wish = movie_wish.replace(utf8List[i],numList[i])
+                        # print(movie_name, movie_wish)
                     except:
                         print("规则匹配错误")
                     ftime = htm.xpath("/html/body/div[3]/div/div[2]/div[1]/ul/li[2]/text()")  # 产地和时长
@@ -226,5 +225,3 @@ if __name__ == '__main__':
     spider = MaoyanSpider()
     print("检索中")
     spider.run()
-
-#
