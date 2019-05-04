@@ -1,5 +1,5 @@
 # coding=UTF-8
-
+import jieba
 from pytagcloud import create_tag_image, make_tags
 import re
 import time
@@ -7,11 +7,13 @@ from collections import Counter
 import os
 import datetime
 
+
 # 去除内容中的非法字符 (Windows)
 def validatecontent(content):
     # '/\:*?"<>|'
-    rstr = r"[\/\\\:\*\?\"\<\>\|\.\*\+\-\(\)\"\'\（\）\！\？\“\”\,\。\；\：\{\}\{\}\=\%\*\~\·]"
+    rstr = r"[\/\\\:\*\?\"\<\>\|\.\*\+\-\(\)\"\'\（\）\！\]\[\、\？\“\”\,\。\；\，\ \：\{\}\{\}\=\%\*\~\·]"
     new_content = re.sub(rstr, "", content)
+    new_content = new_content.strip()
     return new_content
 
 
@@ -49,6 +51,7 @@ def main():
     # 图片长宽
     imglength = 1000
     imgwidth = 800
+    """
     try:
         # imglengths = int(input("请输入图片长（默认1000）："))
         imglengths = 1000
@@ -63,11 +66,13 @@ def main():
             imgwidth = imgwidths
     except:
         imgwidth = 800
+    """
 
     # 背景颜色
     rcolor = 255
     gcolor = 255
     bcolor = 255
+    """
     print("RGB颜色对照值可以参考博客：http://www.cnblogs.com/TTyb/p/5849249.html")
     try:
         rcolors = int(input("请输入背景颜色RGB格式的R（0-255默认白色）："))
@@ -87,23 +92,22 @@ def main():
             bcolor = bcolors
     except:
         bcolor = 255
-    # 构造
-    # counts =[('cloud', 3),
-    # ('words', 2),
-    # ('code', 1),
-    # ('word', 1),
-    # ('appear', 1)]
+    """
     arr = []
-    file = open('/Users/zhangsg/Desktop/xiaobo.txt', 'r')
-    data = file.read().split('\r\n')
-    for content in data:
-        contents = validatecontent(content).split()
-        print(contents)
-        print("=============")
-        print(content)
-        for word in content:
-            arr.append(word)
-    counts = Counter(arr).items()
+    with open('/Users/zhangsg/Downloads/frog_moyan.txt', 'r', encoding='gbk') as file:
+    # with open('/Users/zhangsg/Desktop/xiaobo.txt', 'r') as file:
+        datas = file.readlines()
+        for content in datas:
+            if content.strip():
+                contents = validatecontent(content)
+                # print(contents)
+                print(contents)
+                print("=============")
+                seg_list = jieba.cut(contents)
+                for word in seg_list:
+                    if word.strip() and len(word)>1 and len(word)<10:
+                        arr.append(word)
+            counts = [(k,v) for k,v in Counter(arr).items() if v>15]
 
     print(counts)
     # 用一个时间来命名
@@ -111,7 +115,8 @@ def main():
     # 设置字体大小
     tags = make_tags(counts, maxsize=int(fontsz))
     # 生成图片
-    path = "/Users/zhangsg/Desktop/2019210547.png"
+    # path = "/Users/zhangsg/Desktop/" + str(nowtime) + ".png"
+    path = "/Users/zhangsg/Desktop/1.png"
     create_tag_image(tags, path, size=(imglength, imgwidth), fontname=language,
                      background=(int(rcolor), int(gcolor), int(bcolor)))
     print('已经储存')
